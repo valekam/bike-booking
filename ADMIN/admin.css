@@ -1,0 +1,419 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+    color: #333;
+}
+
+.sidebar {
+    width: 250px;
+    height: 100vh;
+    background-color: #343a40;
+    color: white;
+    position: fixed;
+}
+
+.sidebar-header {
+    padding: 20px;
+    text-align: center;
+    background-color: #23272b;
+}
+
+.sidebar-header h2 {
+    margin: 0;
+}
+
+.nav {
+    list-style-type: none;
+    padding: 0;
+}
+
+.nav li {
+    padding: 15px;
+    text-align: left;
+}
+
+.nav li a {
+    color: white;
+    text-decoration: none;
+    display: block;
+}
+
+.nav li:hover {
+    background-color: #495057;
+}
+
+.main-content {
+    margin-left: 250px;
+    padding: 20px;
+    transition: margin-left 0.3s;
+}
+
+.dashboard-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 0;
+}
+
+.search-container {
+    flex-grow: 1;
+    display: flex;
+    justify-content: flex-end;
+}
+
+.search-input {
+    padding: 10px;
+    border: 1px solid #ced4da;
+    border-radius: 4px;
+    width: 300px;
+    margin-right: 10px;
+}
+
+.dashboard-actions {
+    display: flex;
+    align-items: center;
+}
+
+.logout-button {
+    background-color: #dc3545;
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.logout-button:hover {
+    background-color: #c82333;
+}
+
+.dashboard-stats {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 20px;
+    margin-top: 20px;
+}
+
+.stat-item {
+    background-color: white;
+    border-radius: 8px;
+    padding: 20px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    text-align: center;
+}
+
+.stat-item h2 {
+    margin-bottom: 10px;
+}
+
+footer {
+    text-align: center;
+    padding: 20px;
+    background-color: #23272b;
+    color: white;
+    position: relative;
+    bottom: 0;
+    width: 100%;
+    margin-top: 20px;
+}
+
+@media (max-width: 768px) {
+    .sidebar {
+        width: 100%;
+        height: auto;
+        position: relative;
+    }
+
+    .main-content {
+        margin-left: 0;
+        padding: 10px;
+    }
+
+    .search-input {
+        width: 100%;
+    }
+}
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: #06f111;
+    color: #fff;
+    padding: 10px 20px; /* Adjust padding for better layout */
+    position: sticky; /* Makes the header sticky */
+    top: 0; /* Keeps it at the top */
+    z-index: 1000; /* Ensures it stays above other content */
+    border-radius: 0 0 50px 50px; /* Creates the oval effect */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Optional: adds a shadow for depth */
+}
+
+.bike-logo {
+    width: 100px; /* Adjust size as needed */
+    height: 70px; /* Ensure it's proportional for the oval effect */
+    border-radius: 50%; /* Makes the logo oval */
+    object-fit: cover; /* Ensures the image fits nicely */
+    transition: transform 0.3s; /* Smooth hover effect */
+}
+
+.bike-logo:hover {
+    transform: scale(1.1); /* Slightly enlarge on hover */
+}
+
+.logo-title {
+    font-size: 34px; /* Adjust size as needed */
+    font-weight: bold;
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+    letter-spacing: 1px; /* Spacing for a more modern look */
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5); /* Adds depth */
+    color: #333; /* Adjust color for better contrast */
+}
+
+.nav-links {
+    display: flex;
+    gap: 20px; /* Space between links */
+}
+
+.nav-links a {
+    color: #333; /* Adjust for visibility against background */
+    text-decoration: none;
+    transition: color 0.3s; /* Smooth color change on hover */
+    font-weight: 500; /* Medium weight for better readability */
+}
+
+.nav-links a:hover {
+    color: #28a745; /* Change color on hover */
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .bike-logo {
+        width: 50px; /* Smaller logo on mobile */
+        height: 50px; /* Maintain oval shape */
+    }
+
+    .logo-title {
+        font-size: 20px; /* Adjust size for smaller screens */
+    }
+
+    .nav-links a {
+        font-size: 14px; /* Smaller font size on mobile */
+    }
+}
+
+
+.container {
+    display: flex;
+    justify-content: space-between;
+    margin: 20px;
+}
+
+.form-container {
+    background-color: white;
+    width: 100%;
+    max-width: 400px; /* Smaller width for the form */
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+label {
+    display: block;
+    margin: 10px 0 5px;
+}
+select {
+    width: calc(100% - 20px);
+    padding: 10px;
+    margin-bottom: 15px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+button {
+    background-color: #28a745;
+    color: white;
+    padding: 10px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    width: 100%;
+}
+
+button:hover {
+    background-color: #218838;
+}
+
+    .manage {
+        padding: 20px;
+        text-align: center;
+    }
+
+    table {
+        width: 80%; /* Adjust the width as needed */
+        margin: 0 auto;
+        border-collapse: collapse;
+        font-family: Arial, sans-serif;
+    }
+
+    th, td {
+        padding: 10px;
+        border: 1px solid #ddd;
+        text-align: center;
+    }
+
+    th {
+        background-color: #f2f2f2;
+    }
+
+    img {
+        max-width: 80px; /* Adjust image size */
+        max-height: 80px; /* Maintain aspect ratio */
+        object-fit: cover; /* Crop to fit */
+    }
+
+    .empty {
+        color: red;
+        margin: 20px;
+        font-size: 1.2em;
+    }
+
+.dashboard-actions {
+    display: flex;
+    justify-content: space-between; /* Space between search bar and logout button */
+    align-items: center; /* Align items vertically centered */
+    margin-top: 20px; /* Space from top */
+}
+
+.search-form {
+    flex-grow: 1; /* Allow the search bar to take available space */
+    display: flex; /* Use flexbox for layout */
+}
+
+.search-input {
+    width: 100%; /* Make the search input span the full width */
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+.search-button {
+    padding: 10px 15px;
+    background-color: #4CAF50; /* Green color */
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.search-button:hover {
+    background-color: #45a049; /* Darker green on hover */
+}
+
+.logout-button {
+    padding: 10px 15px;
+    background-color: #f44336; /* Red color */
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.logout-button:hover {
+    background-color: #d32f2f; /* Darker red on hover */
+}
+.signup-modal {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background: white; /* Modal background */
+    padding: 30px;
+    border-radius: 10px; /* Rounded corners */
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2); /* Subtle shadow */
+    width: 90%;
+    max-width: 400px; /* Max width for larger screens */
+    position: fixed; /* Fixed position */
+    top: 50%; /* Center vertically */
+    left: 50%; /* Center horizontally */
+    transform: translate(-50%, -50%); /* Translate to center */
+    z-index: 1000; /* Ensure it's above other elements */
+}
+.hidden {
+    display: none; /* Hide the modal */
+}
+.close {
+    position: absolute;
+    top: 10px;
+    left: 15px; /* Positioning to the left */
+    font-size: 24px;
+    color: #333; /* Color for the close button */
+    cursor: pointer;
+}
+
+.close:hover {
+    color: red; /* Change color on hover */
+}
+.avatar-container {
+    margin-bottom: 20px; /* Space below avatar */
+}
+
+.avatar {
+    width: 80px; /* Avatar width */
+    height: 80px; /* Avatar height */
+}
+
+.welcome-back h2 {
+    margin-bottom: 10px; /* Space below heading */
+}
+/* General input styling */
+input[type="text"], input[type="password"], input[type="email"], input[type="tel"] {
+    width: 100%;
+    padding: 12px; /* Increased padding for better touch area */
+    margin: 10px 0;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    transition: border-color 0.3s;
+}
+
+/* Focus effect for inputs */
+input[type="text"]:focus, 
+input[type="password"]:focus, 
+input[type="email"]:focus, 
+input[type="tel"]:focus {
+    border-color: #4CAF50; /* Change border color on focus */
+    outline: none; /* Remove default outline */
+}
+
+/* Placeholder text styling */
+input::placeholder {
+    color: #aaa; /* Light gray for placeholder text */
+}
+
+/* Button styling */
+button {
+    background-color: #4CAF50; /* Green */
+    color: white;
+    padding: 12px; /* Increased padding */
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    width: 100%;
+    font-size: 16px; /* Larger font for buttons */
+}
+
+button:hover {
+    background-color: #45a049; /* Darker green on hover */
+}
+
+/* Responsive design */
+@media (max-width: 600px) {
+    .signup-modal {
+        width: 90%; /* Full width on smaller screens */
+    }
+}
+
+
