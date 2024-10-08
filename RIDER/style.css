@@ -1,0 +1,144 @@
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+    margin: 0;
+    padding: 0;
+}
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: #06f111;
+    color: #fff;
+    padding: 10px 20px; /* Adjust padding for better layout */
+    position: sticky; /* Makes the header sticky */
+    top: 0; /* Keeps it at the top */
+    z-index: 1000; /* Ensures it stays above other content */
+    border-radius: 0 0 50px 50px; /* Creates the oval effect */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Optional: adds a shadow for depth */
+}
+
+.bike-logo {
+    width: 100px; /* Adjust size as needed */
+    height: 70px; /* Ensure it's proportional for the oval effect */
+    border-radius: 50%; /* Makes the logo oval */
+    object-fit: cover; /* Ensures the image fits nicely */
+    transition: transform 0.3s; /* Smooth hover effect */
+}
+
+.bike-logo:hover {
+    transform: scale(1.1); /* Slightly enlarge on hover */
+}
+
+.logo-title {
+    font-size: 34px; /* Adjust size as needed */
+    font-weight: bold;
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+    letter-spacing: 1px; /* Spacing for a more modern look */
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5); /* Adds depth */
+    color: #333; /* Adjust color for better contrast */
+}
+
+.nav-links {
+    display: flex;
+    gap: 20px; /* Space between links */
+}
+
+.nav-links a {
+    color: #333; /* Adjust for visibility against background */
+    text-decoration: none;
+    transition: color 0.3s; /* Smooth color change on hover */
+    font-weight: 500; /* Medium weight for better readability */
+}
+
+.nav-links a:hover {
+    color: #28a745; /* Change color on hover */
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .bike-logo {
+        width: 50px; /* Smaller logo on mobile */
+        height: 50px; /* Maintain oval shape */
+    }
+
+    .logo-title {
+        font-size: 20px; /* Adjust size for smaller screens */
+    }
+
+    .nav-links a {
+        font-size: 14px; /* Smaller font size on mobile */
+    }
+}
+.form-container {
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    max-width: 400px;
+    margin: 50px auto;
+    padding: 20px;
+}
+
+.avatar-container {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 20px;
+}
+
+.avatar {
+    width: 100px; /* Adjust as needed */
+    height: 100px; /* Adjust as needed */
+    border-radius: 50%; /* Circular */
+    object-fit: cover; /* Ensure the image covers the circle */
+    border: 3px solid #007bff; /* Optional border */
+}
+
+.welcome-back {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+h2 {
+    margin: 0;
+}
+
+label {
+    display: block;
+    margin: 10px 0 5px;
+}
+
+input, select {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 15px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box; /* Include padding and border in the element's total width and height */
+}
+
+button {
+    width: 100%;
+    padding: 10px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: #0056b3; /* Darker shade on hover */
+}
+
+p {
+    text-align: center;
+}
+
+a {
+    color: #007bff;
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: underline;
+}
