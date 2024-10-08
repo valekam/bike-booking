@@ -60,6 +60,14 @@ if (!isset($_SESSION['username'])) {
         $resultUsers = $conn->query($sqlUsers);
         $totalUsers = $resultUsers->fetch_assoc()['total_users'] ?? "Error fetching data";
 
+        $sqlBookings = "SELECT COUNT(*) AS total_bookings FROM bookings";
+        $resultBookings = $conn->query($sqlBookings);
+        $totalBookings = $resultBookings->fetch_assoc()['total_bookings'] ?? "Error fetching data";
+
+        $sqlRiders = "SELECT COUNT(*) AS total_riders FROM riders";
+        $resultRiders = $conn->query($sqlRiders);
+        $totalRiders = $resultRiders->fetch_assoc()['total_riders'] ?? "Error fetching data";
+
         
         $conn->close();
         ?>
@@ -75,6 +83,14 @@ if (!isset($_SESSION['username'])) {
             <div class="stat-item" style="background-color: red;">
                 <h2>Available Users</h2>
                 <h1><?php echo $totalUsers; ?></h1>
+            </div>
+            <div class="stat-item" style="background-color: pink;">
+                <h2>Available Bookings</h2>
+                <h1><?php echo $totalBookings; ?></h1>
+            </div>
+            <div class="stat-item" style="background-color: grey;">
+                <h2>Available Riders</h2>
+                <h1><?php echo $totalRiders; ?></h1>
             </div>
             
         </div>

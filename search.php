@@ -30,7 +30,7 @@ if (isset($_GET['logout'])) {
         <nav class="nav-links">
             <?php if (isset($_SESSION['username'])): ?>
                 <span>Welcome, <?php echo htmlspecialchars($_SESSION['username']); ?></span>
-                <a href="?logout=true">Log Out</a>
+                <a href="logout.php">Log Out</a>
             <?php endif; ?>
         </nav>
     </header>
