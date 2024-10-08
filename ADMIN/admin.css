@@ -233,21 +233,6 @@ select {
     border: 1px solid #ccc;
     border-radius: 4px;
 }
-
-button {
-    background-color: #28a745;
-    color: white;
-    padding: 10px;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-    width: 100%;
-}
-
-button:hover {
-    background-color: #218838;
-}
-
     .manage {
         padding: 20px;
         text-align: center;
@@ -392,28 +377,4 @@ input[type="tel"]:focus {
 input::placeholder {
     color: #aaa; /* Light gray for placeholder text */
 }
-
-/* Button styling */
-button {
-    background-color: #4CAF50; /* Green */
-    color: white;
-    padding: 12px; /* Increased padding */
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    width: 100%;
-    font-size: 16px; /* Larger font for buttons */
-}
-
-button:hover {
-    background-color: #45a049; /* Darker green on hover */
-}
-
-/* Responsive design */
-@media (max-width: 600px) {
-    .signup-modal {
-        width: 90%; /* Full width on smaller screens */
-    }
-}
-
 

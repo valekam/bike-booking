@@ -402,27 +402,9 @@ footer {
 h1 {
     color: #06f111; /* Match header/footer color */
 }
-
-input[type="text"] {
-    width: 80%;
-    padding: 10px;
-    margin: 10px 0;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-}
 #route-form {
     margin-bottom: 20px; /* Space below the form */
 }
-
-.btn {
-    background-color: #06f111;
-    color: white;
-    padding: 10px 20px;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-}
-
 .map {
     height: 300px; /* Adjusted height for a smaller map */
     width: 100%; /* Maintain full width */
@@ -448,95 +430,8 @@ input[type="text"] {
     font-size: 1.2em;
     color: #333;
 }
-.signup-modal {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    background: white; /* Modal background */
-    padding: 30px;
-    border-radius: 10px; /* Rounded corners */
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2); /* Subtle shadow */
-    width: 90%;
-    max-width: 400px; /* Max width for larger screens */
-    position: fixed; /* Fixed position */
-    top: 50%; /* Center vertically */
-    left: 50%; /* Center horizontally */
-    transform: translate(-50%, -50%); /* Translate to center */
-    z-index: 1000; /* Ensure it's above other elements */
-}
-.hidden {
-    display: none; /* Hide the modal */
-}
-.close {
-    position: absolute;
-    top: 10px;
-    left: 15px; /* Positioning to the left */
-    font-size: 24px;
-    color: #333; /* Color for the close button */
-    cursor: pointer;
-}
-
-.close:hover {
-    color: red; /* Change color on hover */
-}
-.avatar-container {
-    margin-bottom: 20px; /* Space below avatar */
-}
-
-.avatar {
-    width: 80px; /* Avatar width */
-    height: 80px; /* Avatar height */
-}
-
-.welcome-back h2 {
-    margin-bottom: 10px; /* Space below heading */
-}
-
-.signup-section {
-    display: flex;
-    flex-direction: column;
-}
-
-input[type="text"],
-input[type="email"],
-input[type="tel"],
-input[type="password"],
-select {
-    width: 100%; /* Full width for inputs */
-    padding: 10px; /* Padding for inputs */
-    margin: 10px 0; /* Space between inputs */
-    border: 1px solid #ccc; /* Border color */
-    border-radius: 5px; /* Rounded corners */
-}
-
-.btn {
-    background-color: #06f111; /* Button color */
-    color: white; /* Text color */
-    padding: 10px; /* Button padding */
-    border: none; /* Remove border */
-    border-radius: 5px; /* Rounded corners */
-    cursor: pointer; /* Pointer on hover */
-    font-size: 16px; /* Font size */
-}
-
-.btn:hover {
-    background-color: #04a30c; /* Darker green on hover */
-}
 
 
-
-button {
-    background-color: #28a745;
-    color: white;
-    border: none;
-    padding: 10px;
-    border-radius: 4px;
-    cursor: pointer;
-}
-
-button:hover {
-    background-color: #218838;
-}
 .fred {
     display: flex;
     justify-content: center;

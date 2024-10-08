@@ -1,54 +1,44 @@
 <?php
 session_start();
-include 'config.php'; // Include your database configuration
+include 'config.php';
 
+if ($conn->connect_error) {
+    die("Connection failed: " . $conn->connect_error);
+}
+
+$message = '';
+$error = '';
+
+// Admin login logic
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    $role = isset($_POST['role']) ? $_POST['role'] : '';
-    $username = mysqli_real_escape_string($conn, $_POST['username']);
-    $password = $_POST['password']; // No hashing
+    $username = trim($_POST['username']);
+    $password = $_POST['password'];
 
-    if ($role === 'admin') {
-        // Fetch the admin from the database
-        $query = "SELECT * FROM admins WHERE username = '$username'";
-        $result = mysqli_query($conn, $query);
+    // Prepare SQL statement
+    $sql = "SELECT username, password FROM admins WHERE username = ? AND is_admin = 1";
+    $stmt = $conn->prepare($sql);
+    $stmt->bind_param("s", $username);
+    $stmt->execute();
+    $result = $stmt->get_result();
 
-        if ($result && mysqli_num_rows($result) == 1) {
-            $admin = mysqli_fetch_assoc($result);
-            // Directly compare the password (not secure)
-            if ($password === $admin['password']) {
-                $_SESSION['is_admin'] = true;
-                $_SESSION['username'] = $username;
-                header("Location: admin_dashboard.php"); // Redirect to admin dashboard
-                exit;
-            } else {
-                echo "<p>Invalid password.</p>";
-            }
+    if ($result->num_rows === 1) {
+        $user = $result->fetch_assoc();
+        // Check if password matches
+        if ($password === $user['password']) {
+            // Store username in session
+            $_SESSION['username'] = $user['username'];
+            header("Location: index.php"); // Redirect to admin dashboard
+            exit();
         } else {
-            echo "<p>No admin found with that username.</p>";
-        }
-    } elseif ($role === 'rider') {
-        // Fetch the rider from the database
-        $query = "SELECT * FROM riders WHERE username = '$username'";
-        $result = mysqli_query($conn, $query);
-
-        if ($result && mysqli_num_rows($result) == 1) {
-            $rider = mysqli_fetch_assoc($result);
-            // Directly compare the password (not secure)
-            if ($password === $rider['password']) {
-                $_SESSION['is_rider'] = true;
-                $_SESSION['username'] = $username;
-                header("Location: rider_dashboard.php"); // Redirect to rider dashboard
-                exit;
-            } else {
-                echo "<p>Invalid password.</p>";
-            }
-        } else {
-            echo "<p>No rider found with that username.</p>";
+            $error = "Incorrect password!";
         }
     } else {
-        echo "<p>Please select a role to login.</p>";
+        $error = "Username not found or not an admin!";
     }
+    $stmt->close();
 }
+
+$conn->close();
 ?>
 
 <!DOCTYPE html>
@@ -56,41 +46,40 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="admin.css">
-    <title>Admin Login</title>
-    
+    <title>Admin Login - Frebuddz Bike Booking System</title>
+    <link rel="icon" href="bike/vaya.png" type="image">
+    <link rel="stylesheet" href="sign.css">
 </head>
 <body>
-    <div class="signup-modal">
-        <button class="close-btn" id="closeBtn">&times;</button>
-        <h2>Login Here!</h2>
-        <p>Please enter your username and password to login.</p>
+    <div class="signup-container">
+    <button class="close-btn" onclick="window.location.href='logout.php'">&times;</button>
+        <div class="signup-section">
+            <div class="avatar-container">
+                <img src="bike.jpg" alt="Avatar" class="avatar">
+            </div>
+            <div class="welcome-back">
+                <h2>Admin Login Here!</h2>
+                <p>Please enter your credentials to log in.</p>
+            </div>
+            <form id="loginForm" method="post">
+                <label for="username">Username</label>
+                <input type="text" id="username" name="username" required>
 
-        <div class="notification" id="notification">
-            <?php if (!empty($error)) echo "<p>$error</p>"; ?>
+                <label for="password">Password</label>
+                <input type="password" id="password" name="password" required>
+
+                <div>
+                    <input type="checkbox" id="is_admin" name="is_admin" checked>
+                    <label for="is_admin">Admin</label>
+                </div>
+
+                <button type="submit" class="btn" name="login">Login</button>
+            </form>
+            <p>Don't have an account? <a href="sign_up.php">Click here to register</a>.</p>
+            <div class="notification <?php echo !empty($message) ? '' : 'error'; ?>" id="notification">
+                <?php echo !empty($message) ? $message : $error; ?>
+            </div>
         </div>
-
-        <form id="loginForm" method="post">
-            <h3>Select Role</h3>
-            <label>
-                <input type="radio" name="role" value="admin" required> Admin
-            </label><br>
-            <label>
-                <input type="radio" name="role" value="rider"> Rider
-            </label><br>
-            <input type="text" id="username" name="username" placeholder="Username" required>
-            <input type="password" id="password" name="password" placeholder="Password" required>
-                
-            <button type="submit" class="btn" name="login">Login</button>
-        </form><br>
-        <p>Don't have an account? <a href="sign_up.php">Click here to sign up</a>.</p><br>
     </div>
-
-    <script>
-        // JavaScript to handle the close button click
-        document.getElementById('closeBtn').onclick = function() {
-            window.location.href = 'index.php'; // Redirect to index.php
-        };
-    </script>
 </body>
 </html>

@@ -30,9 +30,9 @@ if (isset($_GET['bike_plate']) && isset($_GET['departure']) && isset($_GET['dest
     $departure = mysqli_real_escape_string($conn, $_GET['departure']);
     $destination = mysqli_real_escape_string($conn, $_GET['destination']);
 
-    // Fetch bike details from the database
+    // Fetch bike details from the database, including all relevant fields
     $bike_query = mysqli_query($conn, "
-        SELECT bikes.*, routes.price 
+        SELECT bikes.*, routes.price, routes.departure AS route_departure, routes.destination AS route_destination 
         FROM bikes 
         JOIN routes ON bikes.bike_plate = routes.bike_plate 
         WHERE bikes.bike_plate = '$bike_plate'
@@ -46,21 +46,35 @@ if (isset($_GET['bike_plate']) && isset($_GET['departure']) && isset($_GET['dest
 }
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    // Fetch user details
+    // Get departure and destination from the form
+    $departure = mysqli_real_escape_string($conn, $_POST['departure']);
+    $destination = mysqli_real_escape_string($conn, $_POST['destination']);
+
+    // Insert booking details into the bookings table
     $user_name = mysqli_real_escape_string($conn, $user_details['name']);
     $user_email = mysqli_real_escape_string($conn, $user_details['email']);
     $user_phone = mysqli_real_escape_string($conn, $user_details['phone']);
     $price = mysqli_real_escape_string($conn, $bike_details['price']);
 
-    // Notify admin and process M-Pesa payment
-    echo "<script>
-        alert('Sending Ksh " . $price . " to " . $user_phone . " for M-Pesa payment.');
-        // Simulating M-Pesa payment request
-        alert('Admin has been notified for approval of the booking.');
-    </script>";
+    // Insert booking into the bookings table
+    $insert_booking_query = "
+        INSERT INTO bookings (username, bike_plate, departure, destination, price, status) 
+        VALUES ('$username', '$bike_plate', '$departure', '$destination', '$price', 'pending')";
 
-    // Exit after simulating payment and admin notification
-    exit;
+    if (mysqli_query($conn, $insert_booking_query)) {
+        // Optionally, remove bike from bikes and routes table if necessary
+        mysqli_query($conn, "DELETE FROM bikes WHERE bike_plate = '$bike_plate'");
+        mysqli_query($conn, "DELETE FROM routes WHERE bike_plate = '$bike_plate'");
+
+        // Notify user
+        echo "<script>
+            alert('Booking successful! Your booking is pending admin approval.');
+            window.location.href = 'index.php'; // Redirect to homepage or booking history
+        </script>";
+        exit;
+    } else {
+        echo "<script>alert('Error: " . mysqli_error($conn) . "');</script>";
+    }
 }
 ?>
 
@@ -117,6 +131,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             <img src="admin/uploaded_img/<?php echo htmlspecialchars($bike_details['bike_image']); ?>" alt="<?php echo htmlspecialchars($bike_details['bike_plate']); ?>" class="bike-image">
             <p>Bike Plate: <?php echo htmlspecialchars($bike_details['bike_plate']); ?></p>
             <p>Rider: <?php echo htmlspecialchars($bike_details['rider']); ?></p>
+            <p>Departure: <?php echo htmlspecialchars($bike_details['route_departure']); ?></p>
+            <p>Destination: <?php echo htmlspecialchars($bike_details['route_destination']); ?></p>
             <p>Price: Ksh <?php echo htmlspecialchars($bike_details['price']); ?></p>
         </div>
 
@@ -128,10 +144,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
             <h2>Confirm Booking</h2>
             <form method="POST" action="">
-                <input type="hidden" name="user_name" value="<?php echo htmlspecialchars($user_details['name']); ?>">
-                <input type="hidden" name="user_email" value="<?php echo htmlspecialchars($user_details['email']); ?>">
-                <input type="hidden" name="user_phone" value="<?php echo htmlspecialchars($user_details['phone']); ?>">
-                <input type="hidden" name="price" value="<?php echo htmlspecialchars($bike_details['price']); ?>">
+                <input type="hidden" name="departure" value="<?php echo htmlspecialchars($departure); ?>">
+                <input type="hidden" name="destination" value="<?php echo htmlspecialchars($destination); ?>">
                 
                 <button type="submit">Confirm Booking</button>
             </form>

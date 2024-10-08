@@ -1,0 +1,130 @@
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: #06f111;
+    color: #fff;
+    padding: 10px 20px; /* Adjust padding for better layout */
+    position: sticky; /* Makes the header sticky */
+    top: 0; /* Keeps it at the top */
+    z-index: 1000; /* Ensures it stays above other content */
+    border-radius: 0 0 50px 50px; /* Creates the oval effect */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Optional: adds a shadow for depth */
+}
+
+.bike-logo {
+    width: 100px; /* Adjust size as needed */
+    height: 70px; /* Ensure it's proportional for the oval effect */
+    border-radius: 50%; /* Makes the logo oval */
+    object-fit: cover; /* Ensures the image fits nicely */
+    transition: transform 0.3s; /* Smooth hover effect */
+}
+
+.bike-logo:hover {
+    transform: scale(1.1); /* Slightly enlarge on hover */
+}
+
+.logo-title {
+    font-weight: bold;
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+    letter-spacing: 1px; /* Spacing for a more modern look */
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5); /* Adds depth */
+    color: #333; /* Adjust color for better contrast */
+}
+
+.nav-links {
+    display: flex;
+    gap: 10px; /* Space between links */
+}
+
+.nav-links a {
+    color: #333; /* Adjust for visibility against background */
+    text-decoration: none;
+    transition: color 0.3s; /* Smooth color change on hover */
+    font-weight: 500; /* Medium weight for better readability */
+}
+
+.nav-links a:hover {
+    color: #28a745; /* Change color on hover */
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .bike-logo {
+        width: 50px; /* Smaller logo on mobile */
+        height: 50px; /* Maintain oval shape */
+    }
+
+    .logo-title {
+        font-size: 10px; /* Adjust size for smaller screens */
+    }
+
+    .nav-links a {
+        font-size: 14px; /* Smaller font size on mobile */
+    }
+}
+.avatar-container {
+    text-align: center;
+}
+
+.avatar {
+    width: 80px; /* Smaller avatar size */
+    height: auto;
+}
+
+.welcome-back h2 {
+    font-size: 20px; /* Reduced font size */
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+    width: 80%; /* Full width */
+}
+
+label {
+    margin: 8px 0 4px; /* Reduced margin */
+}
+
+input, select {
+    padding: 8px; /* Reduced padding */
+    margin-bottom: 10px; /* Reduced margin */
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    width: 100%; /* Full width */
+    font-size: 14px; /* Smaller font size */
+}
+.signup-container {
+    display: flex;
+    width: 100%;
+    height: 100vh;
+    max-width: 1200px; /* Optional: max width */
+    margin: 0 auto; /* Center */
+}
+.slideshow-container {
+    flex: 1; /* Half of the container */
+    position: relative; /* To position slides */
+}
+.mySlides {
+    display: none; /* Hide all slides by default */
+    width: 100%; /* Full width */
+    height: 100%; /* Full height */
+    object-fit: cover; /* Cover the container */
+}
+.btn {
+    padding: 6px 10px; /* Adjusted padding for smaller size */
+    background-color: #28a745; /* Green */
+    color: white;
+    border: none;
+    border-radius: 4px; /* Smaller radius */
+    cursor: pointer;
+    width: fit-content; /* Button width based on content */
+    align-self: flex-start; /* Align button to the left */
+    font-size: 14px; /* Smaller font size */
+}
+
+.btn:hover {
+    background-color: #218838; /* Darker green */
+}
+
+

@@ -1,10 +1,9 @@
 <?php
-//session_start();
+session_start();
 include 'config.php'; // Include your database configuration
 
 // Check if the user is an admin
 //if (!isset($_SESSION['is_admin']) || $_SESSION['is_admin'] !== true) {
-    //echo "<p>You do not have permission to view this page.</p>";
     //exit;
 //}
 
@@ -30,15 +29,19 @@ $bookings = mysqli_fetch_all($bookings_query, MYSQLI_ASSOC);
                 <th>User Name</th>
                 <th>User Email</th>
                 <th>User Phone</th>
+                <th>Departure</th>
+                <th>Destination</th>
                 <th>Price</th>
                 <th>Actions</th>
             </tr>
             <?php foreach ($bookings as $booking): ?>
                 <tr>
                     <td><?php echo htmlspecialchars($booking['bike_plate']); ?></td>
-                    <td><?php echo htmlspecialchars($booking['user_name']); ?></td>
+                    <td><?php echo htmlspecialchars($booking['username']); ?></td>
                     <td><?php echo htmlspecialchars($booking['user_email']); ?></td>
                     <td><?php echo htmlspecialchars($booking['user_phone']); ?></td>
+                    <td><?php echo htmlspecialchars($booking['departure']); ?></td>
+                    <td><?php echo htmlspecialchars($booking['destination']); ?></td>
                     <td>Ksh <?php echo htmlspecialchars($booking['price']); ?></td>
                     <td>
                         <form method="POST" action="approve_booking.php">

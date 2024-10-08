@@ -1,44 +1,44 @@
 <?php
-    session_start();
-    include 'admin/config.php';
+session_start();
+include 'admin/config.php';
 
-    if ($conn->connect_error) {
-        die("Connection failed: " . $conn->connect_error);
-    }
+if ($conn->connect_error) {
+    die("Connection failed: " . $conn->connect_error);
+}
 
-    $message = '';
-    $error = '';
+$message = '';
+$error = '';
 
-    if ($_SERVER["REQUEST_METHOD"] == "POST") {
-        // Get form data
-        $username = $_POST['username'];
-        $password = $_POST['password'];
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    // Get form data
+    $username = $_POST['username'];
+    $password = $_POST['password'];
 
-        // Prepare SQL statement
-        $sql = "SELECT username, password FROM users WHERE username = ?";
-        $stmt = $conn->prepare($sql);
-        $stmt->bind_param("s", $username);
-        $stmt->execute();
-        $result = $stmt->get_result();
+    // Prepare SQL statement
+    $sql = "SELECT username, password FROM users WHERE username = ?";
+    $stmt = $conn->prepare($sql);
+    $stmt->bind_param("s", $username);
+    $stmt->execute();
+    $result = $stmt->get_result();
 
-        if ($result->num_rows === 1) {
-            $user = $result->fetch_assoc();
-            // Check if password matches (no hashing)
-            if ($password === $user['password']) {
-                // Store username in session
-                $_SESSION['username'] = $user['username'];
-                header("Location: search.php"); // Redirect to search page
-                exit();
-            } else {
-                $error = "Incorrect password!";
-            }
+    if ($result->num_rows === 1) {
+        $user = $result->fetch_assoc();
+        // Check if password matches (no hashing)
+        if ($password === $user['password']) {
+            // Store username in session
+            $_SESSION['username'] = $user['username'];
+            header("Location: search.php"); // Redirect to search page
+            exit();
         } else {
-            $error = "Username not found!";
+            $error = "Incorrect password!";
         }
-        $stmt->close();
+    } else {
+        $error = "Username not found!";
     }
+    $stmt->close();
+}
 
-    $conn->close();
+$conn->close();
 ?>
 
 <!DOCTYPE html>
@@ -48,31 +48,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login - Frebuddz Bike Booking System</title>
     <link rel="icon" href="bike/vaya.png" type="image">
-    <link rel="stylesheet" href="style.css">
-    <style>
-        .close-btn {
-            position: absolute;
-            top: 20px;
-            left: 20px;
-            font-size: 24px;
-            color: #000;
-            background: none;
-            border: none;
-            cursor: pointer;
-        }
-        .notification {
-            position: fixed;
-            top: 20px;
-            left: 50%;
-            transform: translateX(-50%);
-            background-color: #f44336; /* Red for errors */
-            color: white;
-            padding: 10px;
-            border-radius: 5px;
-            display: none; /* Hidden by default */
-            z-index: 1000;
-        }
-    </style>
+    <link rel="stylesheet" href="sign.css">
 </head>
 <body>
     <header class="logo">
@@ -88,31 +64,47 @@
         <?php echo $error; ?>
     </div>
 
-    <div class="signup-modal">
-        <button class="close-btn" id="closeBtn">&times;</button>
-        <div class="avatar-container">
-            <img src="bike/avarter.png" alt="Avatar" class="avatar">
+    <div class="signup-container">
+        <div class="slideshow-container">
+            <div class="mySlides fade">
+                <img src="bike/vaya.png" alt="Vaya" class="slideshow-image">
+            </div>
         </div>
-        <div class="welcome-back">
-            <h2>Login Here!</h2>
-            <p>Please enter your username and password to login.</p>
-        </div>
+
         <div class="signup-section">
+            <div class="avatar-container">
+                <img src="bike/avarter.png" alt="Avatar" class="avatar">
+            </div>
+            <div class="welcome-back">
+                <h2>Login Here!</h2>
+                <p>Please enter your username and password to login.</p>
+            </div>
             <form id="loginForm" method="post">
                 <input type="text" id="username" name="username" placeholder="Username" required>
                 <input type="password" id="password" name="password" placeholder="Password" required>
                 
                 <button type="submit" class="btn" name="login">Login</button>
-            </form><br>
-            <p>Don't have an account? <a href="sign_up.php">Click here to sign up</a>.</p><br>
+            </form>
+            <p>Don't have an account? <a href="sign_up.php">Click here to sign up</a>.</p>
         </div>
     </div>
 
     <script>
-        // JavaScript to handle the close button click
-        document.getElementById('closeBtn').onclick = function() {
-            window.location.href = 'index.php'; // Redirect to index.php
-        };
+        // JavaScript to handle the slideshow
+        let slideIndex = 0;
+        showSlides();
+
+        function showSlides() {
+            let i;
+            const slides = document.getElementsByClassName("mySlides");
+            for (i = 0; i < slides.length; i++) {
+                slides[i].style.display = "none";  
+            }
+            slideIndex++;
+            if (slideIndex > slides.length) {slideIndex = 1}    
+            slides[slideIndex - 1].style.display = "block";  
+            setTimeout(showSlides, 2000); // Change image every 2 seconds
+        }
 
         // Show notification if there is an error
         <?php if (!empty($error)): ?>

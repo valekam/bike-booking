@@ -15,7 +15,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $email = trim($_POST['email']);
     $phone = trim($_POST['phone']);
     $password = $_POST['password'];
-    $confirmPassword = $_POST['confirm_password']; // Confirmation password
+    $confirmPassword = $_POST['confirm_password'];
     $gender = $_POST['gender'];
 
     // Check if any field is empty
@@ -44,7 +44,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 echo "<script>
                     setTimeout(function() {
                         window.location.href = 'login.php';
-                    }, 2000); // Redirect after 1 seconds
+                    }, 2000);
                 </script>";
             } else {
                 $error = "Error: " . $stmt->error;
@@ -65,34 +65,7 @@ $conn->close();
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sign Up - Frebuddz Bike Booking System</title>
     <link rel="icon" href="bike/vaya.png" type="image">
-    <link rel="stylesheet" href="style.css">
-    <style>
-        .close-btn {
-            position: absolute;
-            top: 20px;
-            left: 20px;
-            font-size: 24px;
-            color: #000;
-            background: none;
-            border: none;
-            cursor: pointer;
-        }
-        .notification {
-            position: fixed;
-            top: 20px;
-            left: 50%;
-            transform: translateX(-50%);
-            background-color: #4CAF50; /* Green for success */
-            color: white;
-            padding: 10px;
-            border-radius: 5px;
-            display: none; /* Hidden by default */
-            z-index: 1000;
-        }
-        .error {
-            background-color: #f44336; /* Red for errors */
-        }
-    </style>
+    <link rel="stylesheet" href="sign.css">
 </head>
 <body>
     <header class="logo">
@@ -108,25 +81,41 @@ $conn->close();
         <?php echo !empty($message) ? $message : $error; ?>
     </div>
 
-    <div class="signup-modal">
-        <button class="close-btn" id="closeBtn">&times;</button>
-        <div class="avatar-container">
-            <img src="bike/avarter.png" alt="Avatar" class="avatar">
+    <div class="signup-container">
+        <div class="slideshow-container">
+            <div class="mySlides fade">
+                <img src="bike/vaya.png" alt="Vaya" class="slideshow-image">
+            </div>
         </div>
-        <div class="welcome-back">
-            <h2>Sign Up Here!</h2>
-            <p>Please fill in the information below to create an account.</p>
-        </div>
-        <div class="signup-section">
-            <form id="signupForm" method="post">
-                <input type="text" id="name" name="name" placeholder="Full Name" required>
-                <input type="text" id="username" name="username" placeholder="Username" required>
-                <input type="email" id="email" name="email" placeholder="Email" required>
-                <input type="tel" id="phone" name="phone" placeholder="Phone Number" required>
-                <input type="password" id="password" name="password" placeholder="Password" required>
-                <input type="password" id="confirm_password" name="confirm_password" placeholder="Confirm Password" required>
 
-                <label for="gender">Gender:</label>
+        <div class="signup-section">
+            <div class="avatar-container">
+                <img src="bike/avarter.png" alt="Avatar" class="avatar">
+            </div>
+            <div class="welcome-back">
+                <h2>Sign Up Here!</h2>
+                <p>Please fill in the information below to create an account.</p>
+            </div>
+            <form id="signupForm" method="post">
+                <label for="name">Full Name</label>
+                <input type="text" id="name" name="name" required>
+
+                <label for="username">Username</label>
+                <input type="text" id="username" name="username" required>
+
+                <label for="email">Email</label>
+                <input type="email" id="email" name="email" required>
+
+                <label for="phone">Phone Number</label>
+                <input type="tel" id="phone" name="phone" required>
+
+                <label for="password">Password</label>
+                <input type="password" id="password" name="password" required>
+
+                <label for="confirm_password">Confirm Password</label>
+                <input type="password" id="confirm_password" name="confirm_password" required>
+
+                <label for="gender">Gender</label>
                 <select id="gender" name="gender" required>
                     <option value="" disabled selected>Select your gender</option>
                     <option value="male">Male</option>
@@ -135,21 +124,30 @@ $conn->close();
                 </select>
 
                 <button type="submit" class="btn" name="signup">Sign Up</button>
-            </form><br>
-            <p>Already have an account? <a href="login.php">Click here to login</a>.</p><br>
+            </form>
+            <p>Already have an account? <a href="login.php">Click here to login</a>.</p>
         </div>
     </div>
-
     <script>
-        // JavaScript to handle the close button click
-        document.getElementById('closeBtn').onclick = function() {
-            window.location.href = 'index.php'; // Redirect to index.php
-        };
-
         // Show notification if message or error exists
         <?php if (!empty($message) || !empty($error)): ?>
             document.getElementById('notification').style.display = 'block';
         <?php endif; ?>
+
+        let slideIndex = 0;
+        showSlides();
+
+        function showSlides() {
+            let i;
+            const slides = document.getElementsByClassName("mySlides");
+            for (i = 0; i < slides.length; i++) {
+                slides[i].style.display = "none";  
+            }
+            slideIndex++;
+            if (slideIndex > slides.length) {slideIndex = 1}    
+            slides[slideIndex - 1].style.display = "block";  
+            setTimeout(showSlides, 2000); // Change image every 2 seconds
+        }
     </script>
 </body>
 </html>

@@ -1,10 +1,12 @@
 <?php
-//session_start();
+session_start();
 
-//if (!isset($_SESSION['is_admin']) || $_SESSION['is_admin'] !== true) {
-   // header("Location: login.php");
-    //exit;
-//}
+// Check if user is logged in and is an admin
+if (!isset($_SESSION['username'])) {
+    header("Location: login.php");
+    exit();
+}
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -14,6 +16,10 @@
     <link rel="stylesheet" href="admin.css">
 </head>
 <body>
+<div class="admin-dashboard">
+        <h2>Welcome to Admin Dashboard, <?php echo htmlspecialchars($_SESSION['username']); ?></h2>
+        <p>This is your admin panel where you can manage the bike booking system.</p>
+    </div>
     <div class="sidebar">
         <div class="sidebar-header">
             <h2>Frebuddz Admin</h2>
@@ -35,7 +41,7 @@
               }
             ?>
             <div class="dashboard-actions">
-                <button onclick="location.href='login.php'" class="logout-button">Logout</button>
+                <button onclick="location.href='logout.php'" class="logout-button">Logout</button>
             </div>
         </div>
         <?php
