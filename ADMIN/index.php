@@ -28,8 +28,6 @@ if (!isset($_SESSION['username'])) {
             <li><a href="index.php">Dashboard</a></li>
             <li><a href="add_bikes.php">Add Bikes</a></li>
             <li><a href="add_route.php">Add Route</a></li>
-            <li><a href="admin_approve_bookings.php">Admin A</a></li>
-            <li><a href="approve_booking.php">Approve</a></li>
         </ul>
     </div>
     <div class="main-content">

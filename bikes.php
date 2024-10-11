@@ -1,33 +1,38 @@
 <?php
-session_start();
-include 'admin/config.php'; // Include your database configuration
+    session_start();
+    include 'admin/config.php'; // Include your database configuration
 
-$departure = '';
-$destination = '';
-$bikes = [];
-
-if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET['departure']) && isset($_GET['destination'])) {
-    $departure = mysqli_real_escape_string($conn, $_GET['departure']);
-    $destination = mysqli_real_escape_string($conn, $_GET['destination']);
-
-    // Fetch available bikes based on destination and departure
-    $bikes_query = mysqli_query($conn, "
-        SELECT bikes.*, routes.price, bikes.rider, bikes.rider_no 
-        FROM bikes 
-        JOIN routes ON bikes.bike_plate = routes.bike_plate 
-        WHERE routes.departure = '$departure' AND routes.destination = '$destination'
-    ");
-
-    // Check if the query was successful
-    if ($bikes_query) {
-        while ($row = mysqli_fetch_assoc($bikes_query)) {
-            $bikes[] = $row; // Store available bikes
-        }
-    } else {
-        // Handle the error
-        echo "<p>Error: " . mysqli_error($conn) . "</p>";
+    if (!isset($_SESSION['username'])) {
+        header("Location: login.php"); // Redirect to login if not logged in
+        exit();
     }
-}
+
+    $destination = '';
+    $departure = '';
+    $bikes = [];
+
+    if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET['destination']) && isset($_GET['departure'])) {
+        $destination = mysqli_real_escape_string($conn, $_GET['destination']);
+        $departure = mysqli_real_escape_string($conn, $_GET['departure']);
+
+        // Query to fetch available bikes based on destination and departure
+        $bikes_query = mysqli_query($conn, "
+            SELECT bikes.*, routes.price 
+            FROM bikes 
+            JOIN routes ON bikes.bike_plate = routes.bike_plate 
+            WHERE routes.destination = '$destination' 
+            AND routes.departure = '$departure' 
+            AND bikes.available = 1
+        ");
+
+        if ($bikes_query) {
+            while ($row = mysqli_fetch_assoc($bikes_query)) {
+                $bikes[] = $row;
+            }
+        } else {
+            echo "<p>Error fetching bikes: " . mysqli_error($conn) . "</p>";
+        }
+    }
 ?>
 
 <!DOCTYPE html>

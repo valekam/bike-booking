@@ -20,6 +20,10 @@ if (isset($_POST['add_route'])) {
     $insert_route_query = "INSERT INTO routes (bike_plate, destination, departure, price) VALUES ('$bike_plate', '$destination', '$departure', '$price')";
 
     if (mysqli_query($conn, $insert_route_query)) {
+        // Mark the bike as unavailable
+        $update_bike_query = "UPDATE bikes SET available = 0 WHERE bike_plate = '$bike_plate'";
+        mysqli_query($conn, $update_bike_query);
+        
         echo "<script>alert('Route added successfully.'); window.location = 'add_route.php';</script>";
     } else {
         echo "<script>alert('Could not add route.');</script>";
@@ -51,20 +55,20 @@ if (isset($_POST['add_route'])) {
     <div class="form-container">
         <h1>Add New Route</h1>
         <form method="POST" action="add_route.php">
-    <label for="bike_plate">Bike Plate:</label>
-    <select id="bike_plate" name="bike_plate" required>
-        <?php
-        // Fetch bike details from the database
-        $bikes_query = mysqli_query($conn, "SELECT bike_plate, bike_image, rider, rider_no FROM bikes");
-        while ($row = mysqli_fetch_assoc($bikes_query)) {
-            echo "<option value='{$row['bike_plate']}'>{$row['bike_plate']}</option>";
-        }
-        ?>
+            <label for="bike_plate">Bike Plate:</label>
+            <select id="bike_plate" name="bike_plate" required>
+                <?php
+                // Fetch only available bikes from the database
+                $bikes_query = mysqli_query($conn, "SELECT bike_plate, bike_image, rider, rider_no FROM bikes WHERE available = 1");
+                while ($row = mysqli_fetch_assoc($bikes_query)) {
+                    echo "<option value='{$row['bike_plate']}'>{$row['bike_plate']}</option>";
+                }
+                ?>
             </select>
             <div id="bikeDetails">
-        <p id="bikeImageContainer"></p>
-        <p id="riderContainer"></p>
-    </div>
+                <p id="bikeImageContainer"></p>
+                <p id="riderContainer"></p>
+            </div>
 
             <label for="destination">Destination:</label>
             <input type="text" id="destination" name="destination" required>
@@ -95,35 +99,35 @@ if (isset($_POST['add_route'])) {
             <tbody>
                 <?php
                 // Fetch added routes along with bike details
-$select_routes = mysqli_query($conn, "
-SELECT routes.*, bikes.bike_image, bikes.rider, bikes.rider_no
-FROM routes
-JOIN bikes ON routes.bike_plate = bikes.bike_plate
-");
+                $select_routes = mysqli_query($conn, "
+                    SELECT routes.*, bikes.bike_image, bikes.rider, bikes.rider_no
+                    FROM routes
+                    JOIN bikes ON routes.bike_plate = bikes.bike_plate
+                ");
 
-if ($select_routes) {
-if (mysqli_num_rows($select_routes) > 0) {
-    while ($row = mysqli_fetch_assoc($select_routes)) {
-        ?>
-        <tr>
-            <td><img src="uploaded_img/<?php echo $row['bike_image']; ?>" class="small-img" alt="Bike Image"></td>
-            <td><?php echo $row['bike_plate']; ?></td>
-            <td><?php echo $row['destination']; ?></td>
-            <td><?php echo $row['departure']; ?></td>
-            <td><?php echo $row['price']; ?></td>
-            <td><?php echo $row['rider']; ?></td>
-            <td><?php echo $row['rider_no']; ?></td>
-        </tr>
-        <?php
-    }
-} else {
-    echo "<tr><td colspan='7' class='empty'>No routes added</td></tr>";
-}
-} else {
-// Output the error if the query fails
-echo "<tr><td colspan='7' class='empty'>Error fetching routes: " . mysqli_error($conn) . "</td></tr>";
-}
-?>
+                if ($select_routes) {
+                    if (mysqli_num_rows($select_routes) > 0) {
+                        while ($row = mysqli_fetch_assoc($select_routes)) {
+                            ?>
+                            <tr>
+                                <td><img src="uploaded_img/<?php echo $row['bike_image']; ?>" class="small-img" alt="Bike Image"></td>
+                                <td><?php echo $row['bike_plate']; ?></td>
+                                <td><?php echo $row['destination']; ?></td>
+                                <td><?php echo $row['departure']; ?></td>
+                                <td><?php echo $row['price']; ?></td>
+                                <td><?php echo $row['rider']; ?></td>
+                                <td><?php echo $row['rider_no']; ?></td>
+                            </tr>
+                            <?php
+                        }
+                    } else {
+                        echo "<tr><td colspan='7' class='empty'>No routes added</td></tr>";
+                    }
+                } else {
+                    // Output the error if the query fails
+                    echo "<tr><td colspan='7' class='empty'>Error fetching routes: " . mysqli_error($conn) . "</td></tr>";
+                }
+                ?>
             </tbody>
         </table>
     </section>

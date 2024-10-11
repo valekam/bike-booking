@@ -1,17 +1,29 @@
 <?php
 session_start();
+$host = "localhost";
+$user = "root";
+$pass = "";
+$db = "bikebooking";
 
+$conn = new mysqli($host, $user, $pass, $db);
+if ($conn->connect_error) {
+    die("Connection failed: " . $conn->connect_error);
+}
+
+// Ensure the rider is logged in
 if (!isset($_SESSION['username'])) {
     header("Location: login.php"); // Redirect to login if not logged in
     exit();
 }
-if (isset($_GET['logout'])) {
-    // Destroy the session
-    session_destroy();
-    header("Location: index.php"); // Redirect to index.php after logout
-    exit();
-}
 
+// Fetch pending booking count for the logged-in user
+$username = $_SESSION['username'];
+$notification_query = $conn->prepare("SELECT COUNT(*) FROM bookings WHERE username = ? AND status = 'pending'");
+$notification_query->bind_param("s", $username);
+$notification_query->execute();
+$notification_query->bind_result($notification_count);
+$notification_query->fetch();
+$notification_query->close();
 ?>
 
 <!DOCTYPE html>
@@ -28,29 +40,22 @@ if (isset($_GET['logout'])) {
         <img src="bike/kawa.png" alt="Bike Logo" class="bike-logo">
         <div class="logo-title">SECURE <span>BIKE BOOKING SYSTEM</span></div>
         <nav class="nav-links">
-            <?php if (isset($_SESSION['username'])): ?>
-                <span>Welcome, <?php echo htmlspecialchars($_SESSION['username']); ?></span>
-                <a href="logout.php">Log Out</a>
-            <?php endif; ?>
+            <span>Welcome, <?php echo htmlspecialchars($username); ?></span>
+            <a href="booked_page.php">My Bookings (<?php echo $notification_count; ?>)</a>
+            <a href="logout.php">Log Out</a>
         </nav>
     </header>
     <div class="fred">
         <div class="cont">
             <h1>Bike Booking Service</h1>
-            <?php if (isset($_SESSION['username'])): ?>
-                <h2>Welcome, <?php echo htmlspecialchars($_SESSION['username']); ?>!</h2>
-                <p>Thank you for logging in. You can now enter the destination and the departure to book your bike and enjoy your ride!</p>
-            <?php else: ?>
-                <p>Please log in to access our services.</p>
-            <?php endif; ?>
+            <h2>Welcome, <?php echo htmlspecialchars($username); ?>!</h2>
+            <p>Thank you for logging in. You can now enter the destination and the departure to book your bike and enjoy your ride!</p>
             <form id="route-form" action="bikes.php" method="GET">
                 <label for="destination">Destination:</label>
                 <input type="text" id="destination" name="destination" required>
                 
                 <label for="departure">Departure:</label>
                 <input type="text" id="departure" name="departure" required>
-
-               
 
                 <button type="submit">Search Bike</button>
             </form>

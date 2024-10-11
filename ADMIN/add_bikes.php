@@ -16,7 +16,7 @@ if (isset($_POST['add_bike'])) {
     $owner_no = mysqli_real_escape_string($conn, $_POST['owner_no']);
     $rider = mysqli_real_escape_string($conn, $_POST['rider']);
     $rider_no = mysqli_real_escape_string($conn, $_POST['rider_no']);
-    $bike_image = $_FILES['bike_image']['name']; // Correct key for image name
+    $bike_image = $_FILES['bike_image']['name'];
     $bike_image_tmp_name = $_FILES['bike_image']['tmp_name'];
     $bike_image_folder = 'uploaded_img/' . $bike_image;
 
@@ -24,8 +24,9 @@ if (isset($_POST['add_bike'])) {
     if (mysqli_num_rows($duplicate_check_query) > 0) {
         echo "<script>alert('A bike with the same plate exists.'); window.location.href='add_bikes.php';</script>";
     } else {
-        $insert_bike_query = "INSERT INTO bikes (bike_plate, owner, owner_no, rider, rider_no, bike_image)
-        VALUES ('$bike_plate', '$owner', '$owner_no', '$rider', '$rider_no', '$bike_image')";
+        // Set the bike as available (1)
+        $insert_bike_query = "INSERT INTO bikes (bike_plate, owner, owner_no, rider, rider_no, bike_image, available)
+        VALUES ('$bike_plate', '$owner', '$owner_no', '$rider', '$rider_no', '$bike_image', 1)";
 
         if (mysqli_query($conn, $insert_bike_query)) {
             move_uploaded_file($bike_image_tmp_name, $bike_image_folder);
@@ -35,8 +36,22 @@ if (isset($_POST['add_bike'])) {
         }
     }
 }
-?>
 
+// Booking logic should set availability to 0
+if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['book_bike'])) {
+    $bike_plate = mysqli_real_escape_string($conn, $_POST['bike_plate']);
+    // Other booking details here...
+
+    // Update availability to not available (0)
+    $stmt = $conn->prepare("UPDATE bikes SET available = 0 WHERE bike_plate = ?");
+    $stmt->bind_param("s", $bike_plate);
+    $stmt->execute();
+}
+
+// Fetch added bikes with availability status
+$select_products = mysqli_query($conn, "SELECT * FROM `bikes`");
+
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -57,7 +72,7 @@ if (isset($_POST['add_bike'])) {
     
     <div class="form-container">
         <h1>Add New Bike</h1>
-        <form method="POST" action="add_bikes.php" enctype="multipart/form-data"> <!-- Add enctype -->
+        <form method="POST" action="add_bikes.php" enctype="multipart/form-data">
             <label for="bike_plate">Bike Plate:</label>
             <input type="text" id="bike_plate" name="bike_plate" required>
 
@@ -90,18 +105,16 @@ if (isset($_POST['add_bike'])) {
                     <th>OWNER NO</th>
                     <th>RIDER</th>
                     <th>RIDER NO</th>
+                    <th>AVAILABLE</th>
                 </tr>
             </thead>
             <tbody>
                 <?php
-                // Fetch added bikes
-                $select_products = mysqli_query($conn, "SELECT * FROM `bikes`");
-
                 if (!$select_products) {
-                    // Output the error if the query fails
                     echo "Error: " . mysqli_error($conn);
                 } elseif (mysqli_num_rows($select_products) > 0) {
                     while ($row = mysqli_fetch_assoc($select_products)) {
+                        $availability = $row['available'] ? 'Yes' : 'No';
                 ?>
                 <tr>
                     <td><img src="uploaded_img/<?php echo $row['bike_image']; ?>" height="100" alt=""></td>
@@ -110,11 +123,12 @@ if (isset($_POST['add_bike'])) {
                     <td><?php echo $row['owner_no']; ?></td>
                     <td><?php echo $row['rider']; ?></td>
                     <td><?php echo $row['rider_no']; ?></td>
+                    <td><?php echo $availability; ?></td>
                 </tr>
                 <?php
                     }
                 } else {
-                    echo "<tr><td colspan='6' class='empty'>No bike added</td></tr>";
+                    echo "<tr><td colspan='7' class='empty'>No bike added</td></tr>";
                 }
                 ?>
             </tbody>
